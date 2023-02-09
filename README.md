@@ -7,3 +7,8 @@ After two videos I created a code like below and executed in replit.com, code is
 ### Few files I created by myself after learnign few funtionlaties of python, to automate few things for my project. Below two files I created-
 1. [delcg.py](https://github.com/akashsinghal14/Python-Learning-2023/blob/main/delcg.py) - to delete all files except coding files of python in metioned folder
 2. [renamecg.py](https://github.com/akashsinghal14/Python-Learning-2023/blob/main/renamecg.py) - to rename all files except coding files
+
+
+### [Website Login](https://github.com/akashsinghal14/Python-Learning-2023/tree/main/website_login)
+This folder contains the code of python selenium, python GIT and couple of OS library function like deleting file, renaming it and replcing it in other folder. I created this code to automate my daily work and reduce the redundant work we do as a team.
+This folder has two files one is [logindetails.yml](https://github.com/akashsinghal14/Python-Learning-2023/blob/main/website_login/logindetails.yml) which contain credentials of site to login. Other is [login_multiple.py](https://github.com/akashsinghal14/Python-Learning-2023/blob/main/website_login/login_multiple.py) which has all the code described above.
