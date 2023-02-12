@@ -1,27 +1,7 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver import Chrome, ChromeOptions
-## All above are the selenium drivers
-
-import os # to delete and do other thing path related
-import yaml # to take input from other files
-import time # to add wait time while browser loading or downloading 
-import sys # to ask for cmd line arguments when executing
-import git # to execute GIT related comands
-
-
-# Take the input of content group while executing
-#   Example:- .\login.py SR # will download the studnet readiness file
-#   Example:- .\login.py RA # will download the Risk analysis file
-cg = sys.argv
-# cg = cg[1]
-#####################################################
-# Below are the arguments and full form can be     #
-# passed while executing the script, its required  #
-# to pass at least one argument currently          #
+######################################################
+# Below are the arguments and full form can be       #
+# passed while executing the script, its required    #
+# to pass at least one argument currently            #
 #    1. IB = InterventionnsBeta                      #
 #    2. SR = StudentReadiness                        #
 #    3. ESS = Essentials                             #
@@ -29,36 +9,64 @@ cg = sys.argv
 #    5. DL = DigitalLearning                         #
 #    6. RA = RiskAnalysis                            #
 #    7. SV = SystemAndVariables                      #
-#####################################################
+# Example: python .\login_multiple.py RA SV DL       #    
+######################################################
+
+
+## All below are the selenium drivers
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver import Chrome, ChromeOptions
+
+import os # to delete and do other thing path related
+import yaml # to take input from other files
+import time # to add wait time while browser loading or downloading 
+import sys # to ask for cmd line arguments when executing
+import git # to execute GIT related comands
+from dotenv.main import load_dotenv # to load .env file
+
+## Import values from .env file
+load_dotenv()
+email = os.getenv('email')
+password = os.getenv('password')
+loginLink = os.getenv('loginLink')
+migrationWindow = os.getenv('migrationWindow')
+downloadPath = os.getenv('downloadPath')
+gitPath = os.getenv('gitPath')
+
+# Take the input of content group while executing
+cg = sys.argv
+#   Example:- .\login.py SR # will download the studnet readiness file
+#   Example:- .\login.py RA # will download the Risk analysis file
+
+
 
 ## This is the function to clean all files before starting any downloading from portal
 def delete(path):
     allfiles = os.listdir(path)
     for i in range(len(allfiles)):
-        if allfiles[i] == 'renamecg.py' or allfiles[i] == 'delcg.py':
-            print("not going to delete this- "+ path+"\\"+allfiles[i])
-        else:
             os.remove(path+"\\"+allfiles[i]) 
 
-## Add all paths here
-# Login versifit link it could be gtdev or ps3 but this code is only tested for gtdev
-loginLink = "https://gtdev1-dev.hoonuit.com/Dashboard/login/login.jsp"
-# link to open migration tool
-migrationWindow="https://gtdev1-dev.hoonuit.com/Dashboard/page.portal?handler=CONTENT&_form_Action=open&_form_LinkId=1708&_form_Refresh=N&_rCacheSeed=1674627437694"
-# This is argumeent in two function delete and rename
-downloadPath = "C:\\Users\\singhala\\Downloads\\RenameCG\\"
-# Add your git path like below
-gitPath = "C:\\Users\\singhala\\Documents\\Versift GIT Oct2021\\content-groups\\"
+# ## Add all paths here
+# # Login versifit link it could be gtdev or ps3 but this code is only tested for gtdev
+# loginLink = "https://gtdev1-dev.hoonuit.com/Dashboard/login/login.jsp"
+# # link to open migration tool
+# migrationWindow="https://gtdev1-dev.hoonuit.com/Dashboard/page.portal?handler=CONTENT&_form_Action=open&_form_LinkId=1708&_form_Refresh=N&_rCacheSeed=1674627437694"
+# # This is argumeent in two function delete and rename
+# downloadPath = "C:\\Users\\singhala\\Downloads\\RenameCG\\"
+# # Add your git path like below
+# gitPath = "C:\\Users\\singhala\\Documents\\Versift GIT Oct2021\\content-groups\\"
 
 # Importing details from other yml files
-conf = yaml.safe_load(open('logindetails.yml'))
-myUser = conf['versifit_user']['email']
-myPassword = conf['versifit_user']['password']
+# conf = yaml.safe_load(open('logindetails.yml'))
+# myUser = conf['versifit_user']['email']
+# myPassword = conf['versifit_user']['password']
+
 # Below is the function which will go to migrtion tool and export the CG's
 def login(url,usernameId, username, passwordId, password, submit_buttonId, contentgroup):
-
-    # options = webdriver.ChromeOptions() 
-
     # Initiating driver to handle automatically using library
     chrome_options = webdriver.ChromeOptions()
     # Changing the downalod directory
@@ -98,8 +106,8 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
     ## Click to expand content defintions
     driver.find_element(By.ID, "ip_MainNavTree45").click()
 
+    # initializing a variable to iterate on multiple CG download
     index=1
-
 
     ## using try and catch finding 
     try:
@@ -108,16 +116,15 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
             EC.presence_of_element_located((By.ID, "ip_MainNavTree3492"))
         )
         element.click()
+        #initializing the variable to monitor the downloading files
         i=0
         while index < len(cg):
             contentgroup = cg[index]
-            # print(contentgroup)
             ## Download Student Readiness CG
             if contentgroup == 'SR':
-                # print("loop1")
-                # print(contentgroup)
+
                 index+=1
-                # print(index)
+
                 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "cstl_MainNavTree7077")))
                 element.click()
                 driver.switch_to.default_content()
@@ -143,8 +150,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 ## below code is for next loop so all frames are in place to run download script
                 # switching to main window
                 driver.switch_to.window(exportwindow[0])
-                # b = driver.switch_to.window(exportwindow[0])
-                # print(b)
+
                 ## Switch to main/parent frame
                 driver.switch_to.default_content()
                 ## Again swtich to main/parent frame
@@ -157,10 +163,9 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
 
             ## Download Interventions Beta CG
             elif contentgroup == 'IB':
-                # print("loop2")
-                # print(contentgroup)
+
                 index+=1
-                # print(index)                
+                
                 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "cstl_MainNavTree7530")))
                 element.click()
                 driver.switch_to.default_content()
@@ -186,8 +191,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 ## below code is for next loop so all frames are in place to run download script
                 # switching to main window
                 driver.switch_to.window(exportwindow[0])
-                # b = driver.switch_to.window(exportwindow[0])
-                # print(b)
+
                 ## Switch to main/parent frame
                 driver.switch_to.default_content()
                 ## Again swtich to main/parent frame
@@ -199,10 +203,9 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
 
             ## Download Essentilas CG
             elif contentgroup == 'ESS':
-                # print("loop2")
-                # print(contentgroup)
+
                 index+=1
-                # print(index)                
+                
                 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "cstl_MainNavTree3493")))
                 element.click()
                 driver.switch_to.default_content()
@@ -229,8 +232,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 ## below code is for next loop so all frames are in place to run download script
                 # switching to main window
                 driver.switch_to.window(exportwindow[0])
-                # b = driver.switch_to.window(exportwindow[0])
-                # print(b)
+
                 ## Switch to main/parent frame
                 driver.switch_to.default_content()
                 ## Again swtich to main/parent frame
@@ -242,10 +244,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
 
             ## Download Assessment CG
             elif contentgroup == 'AS':
-                # print("loop2")
-                # print(contentgroup)
-                index+=1
-                # print(index)                
+                index+=1                
                 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "cstl_MainNavTree3495")))
                 element.click()
                 driver.switch_to.default_content()
@@ -272,8 +271,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 ## below code is for next loop so all frames are in place to run download script
                 # switching to main window
                 driver.switch_to.window(exportwindow[0])
-                # b = driver.switch_to.window(exportwindow[0])
-                # print(b)
+
                 ## Switch to main/parent frame
                 driver.switch_to.default_content()
                 ## Again swtich to main/parent frame
@@ -285,10 +283,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
 
             ## Download RiskAnalysis CG
             elif contentgroup == 'RA':
-                # print("loop2")
-                # print(contentgroup)
                 index+=1
-                # print(index)                
                 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "cstl_MainNavTree5356")))
                 element.click()
                 driver.switch_to.default_content()
@@ -315,8 +310,6 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 ## below code is for next loop so all frames are in place to run download script
                 # switching to main window
                 driver.switch_to.window(exportwindow[0])
-                # b = driver.switch_to.window(exportwindow[0])
-                # print(b)
                 ## Switch to main/parent frame
                 driver.switch_to.default_content()
                 ## Again swtich to main/parent frame
@@ -328,10 +321,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
 
             ## Download DigitalLearning CG
             elif contentgroup == 'DL':
-                # print("loop2")
-                # print(contentgroup)
                 index+=1
-                # print(index)                
                 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "cstl_MainNavTree3496")))
                 element.click()
                 driver.switch_to.default_content()
@@ -358,8 +348,6 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 ## below code is for next loop so all frames are in place to run download script
                 # switching to main window
                 driver.switch_to.window(exportwindow[0])
-                # b = driver.switch_to.window(exportwindow[0])
-                # print(b)
                 ## Switch to main/parent frame
                 driver.switch_to.default_content()
                 ## Again swtich to main/parent frame
@@ -371,10 +359,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
 
             ## Download System And Variables CG
             elif contentgroup == 'SV':
-                # print("loop2")
-                # print(contentgroup)
                 index+=1
-                # print(index)                
                 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "cstl_MainNavTree3494")))
                 element.click()
                 driver.switch_to.default_content()
@@ -401,8 +386,6 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 ## below code is for next loop so all frames are in place to run download script
                 # switching to main window
                 driver.switch_to.window(exportwindow[0])
-                # b = driver.switch_to.window(exportwindow[0])
-                # print(b)
                 ## Switch to main/parent frame
                 driver.switch_to.default_content()
                 ## Again swtich to main/parent frame
@@ -429,11 +412,11 @@ def rename(path):
 
 def gitpull(git_dir):
     g = git.cmd.Git(git_dir)
+    g.reset()
+    g.checkout('--','.')
+    time.sleep(2)
     g.pull()
-    path = "C:\\Users\\singhala\\Downloads\\RenameCG\\"
-    allfiles = os.listdir(path)
-    # print(allfiles)
-    # print(len(allfiles))
+    allfiles = os.listdir(downloadPath)
     for x in range(len(allfiles)):
         firstfile = allfiles[x]
         
@@ -464,12 +447,18 @@ def gitpull(git_dir):
         else:
             exit()
 
-# "C:\\Users\\singhala\\Documents\\Versift GIT Oct2021\\content-groups\\optional\\"
 #calling functions 
 
-## Take pull as well from GIT
 
-delete(downloadPath)
-login(loginLink, "user", myUser, "pass", myPassword, "btnSubmit", cg)
-rename(downloadPath)
-gitpull(gitPath)
+
+
+if __name__ == "__main__":
+
+    # ##call function to clear up the path or delete everything
+    delete(downloadPath)
+    # ## call login functino to download CG
+    # login(loginLink, "user", myUser, "pass", myPassword, "btnSubmit", cg)
+    # ## call rename function to change the file name properly as per requirement
+    rename(downloadPath)
+    # ## take the pull first and move the file from downloadPath to gitPath
+    gitpull(gitPath)
