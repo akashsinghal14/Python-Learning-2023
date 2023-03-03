@@ -30,8 +30,8 @@ from dotenv.main import load_dotenv # to load .env file
 
 ## Import values from .env file
 load_dotenv()
-email = os.getenv('email')
-password = os.getenv('password')
+myUser = os.getenv('email')
+myPassword = os.getenv('password')
 loginLink = os.getenv('loginLink')
 migrationWindow = os.getenv('migrationWindow')
 downloadPath = os.getenv('downloadPath')
@@ -42,7 +42,8 @@ cg = sys.argv
 #   Example:- .\login.py SR # will download the studnet readiness file
 #   Example:- .\login.py RA # will download the Risk analysis file
 
-
+# All selenium variables
+xpath_to_click_export='/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img'
 
 ## This is the function to clean all files before starting any downloading from portal
 def delete(path):
@@ -131,7 +132,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"migrationsource")))
                 driver.switch_to.frame("folderList")
                 element = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img"))
+                    EC.presence_of_element_located((By.XPATH, xpath_to_click_export))
                 )
                 element.click()
 
@@ -172,7 +173,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"migrationsource")))
                 driver.switch_to.frame("folderList")
                 element = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img"))
+                    EC.presence_of_element_located((By.XPATH, xpath_to_click_export))
                 )
                 element.click()
                 
@@ -212,7 +213,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"migrationsource")))
                 driver.switch_to.frame("folderList")
                 element = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img"))
+                    EC.presence_of_element_located((By.XPATH, xpath_to_click_export))
                 )
                 element.click()
                 
@@ -251,7 +252,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"migrationsource")))
                 driver.switch_to.frame("folderList")
                 element = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img"))
+                    EC.presence_of_element_located((By.XPATH, xpath_to_click_export))
                 )
                 element.click()
                 
@@ -290,7 +291,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"migrationsource")))
                 driver.switch_to.frame("folderList")
                 element = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img"))
+                    EC.presence_of_element_located((By.XPATH, xpath_to_click_export))
                 )
                 element.click()
                 
@@ -328,7 +329,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"migrationsource")))
                 driver.switch_to.frame("folderList")
                 element = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img"))
+                    EC.presence_of_element_located((By.XPATH, xpath_to_click_export))
                 )
                 element.click()
                 
@@ -366,7 +367,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.ID,"migrationsource")))
                 driver.switch_to.frame("folderList")
                 element = WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body/div/table/tbody/tr[1]/td/div[1]/div/table/tbody/tr[2]/td/table/tbody/tr/td[1]/table/tbody/tr/td[2]/table/tbody/tr/td[3]/a/table/tbody/tr/td/div/span/img"))
+                    EC.presence_of_element_located((By.XPATH, xpath_to_click_export))
                 )
                 element.click()
                 
@@ -395,6 +396,7 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId, conte
                 driver.switch_to.frame("folderList")
                 driver.switch_to.frame("NavTreeFrame")                
             else:
+                print("Please give correct CG in input.")
                 exit() 
 
 
@@ -445,6 +447,7 @@ def gitpull(git_dir):
             os.replace(downloadPath + "SystemVariables.7z", gitPath + "essentials\\SystemVariables.7z")
 
         else:
+            
             exit()
 
 #calling functions 
@@ -457,7 +460,7 @@ if __name__ == "__main__":
     # ##call function to clear up the path or delete everything
     delete(downloadPath)
     # ## call login functino to download CG
-    # login(loginLink, "user", myUser, "pass", myPassword, "btnSubmit", cg)
+    login(loginLink, "user", myUser, "pass", myPassword, "btnSubmit", cg)
     # ## call rename function to change the file name properly as per requirement
     rename(downloadPath)
     # ## take the pull first and move the file from downloadPath to gitPath
